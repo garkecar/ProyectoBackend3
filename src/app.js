@@ -2,6 +2,10 @@ import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import { fileURLToPath } from "url";
+import path from "path";
 
 import usersRouter from "./routes/users.router.js";
 import petsRouter from "./routes/pets.router.js";
@@ -12,7 +16,24 @@ import loggerTestRouter from "./routes/loggerTest.router.js";
 
 import logger from "./utils/logger.js";
 
-dotenv.config();
+dotenv.config({ quiet: true });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentación API Adoptme",
+      description:
+        "API para gestión de adopción de mascotas, usuarios y sesiones.",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -24,8 +45,11 @@ mongoose
     logger.error(`Error al conectar a MongoDB: ${error.message}`),
   );
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+app.use("/img", express.static(path.join(__dirname, "public/img")));
 app.use("/api/users", usersRouter);
 app.use("/api/pets", petsRouter);
 app.use("/api/adoptions", adoptionsRouter);

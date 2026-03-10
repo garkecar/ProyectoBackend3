@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+.env
+src/public/img/*
+src/public/img/documents/*
+src/public/img/pets/*
+test
+.DS_Store

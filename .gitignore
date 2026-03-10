@@ -3,3 +3,10 @@ node_modules
 .env
 errors.log
 .DS_Store
+src/public/img/*
+src/public/img/pets/*
+src/public/img/documents/*
+src/public/img/profiles/*
+!src/public/img/pets/.gitkeep
+!src/public/img/documents/.gitkeep
+!src/public/img/profiles/.gitkeep

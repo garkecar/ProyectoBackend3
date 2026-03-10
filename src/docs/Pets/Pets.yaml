@@ -1,0 +1,106 @@
+paths:
+  /api/pets:
+    get:
+      summary: Obtiene todas las mascotas
+      tags:
+        - Pets
+      responses:
+        200:
+          description: Lista de mascotas obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pet"
+        500:
+          description: Error interno del servidor
+    post:
+      summary: Crea una nueva mascota
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PetInput"
+      responses:
+        201:
+          description: Mascota creada exitosamente
+        400:
+          description: Error en los datos de entrada
+        500:
+          description: Error interno del servidor
+
+  /api/pets/{pid}:
+    get:
+      summary: Obtiene una mascota por ID
+      tags:
+        - Pets
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID de la mascota a buscar
+          schema:
+            type: string
+      responses:
+        200:
+          description: Mascota encontrada
+        404:
+          description: Mascota no encontrada
+
+components:
+  schemas:
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: ID autogenerado por MongoDB
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie (dog, cat, etc.)
+        birthDate:
+          type: string
+          format: date
+          description: Fecha de nacimiento
+        adopted:
+          type: boolean
+          description: Estado de adopción
+        owner:
+          type: string
+          description: ID del usuario dueño (si aplica)
+        image:
+          type: string
+          description: URL de la imagen de la mascota
+      example:
+        _id: "65a1b2c3d4e5f6g7h8i9j0k1"
+        name: "Ace"
+        specie: "dog"
+        birthDate: "2022-05-20"
+        adopted: false
+        owner: null
+        image: "https://via.placeholder.com/150"
+
+    PetInput:
+      type: object
+      required:
+        - name
+        - specie
+      properties:
+        name:
+          type: string
+        specie:
+          type: string
+        birthDate:
+          type: string
+          format: date
+      example:
+        name: "Rex"
+        specie: "dog"
+        birthDate: "2023-01-10"
