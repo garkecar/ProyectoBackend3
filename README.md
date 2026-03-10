@@ -50,7 +50,7 @@ Puedes correr el proyecto sin instalar dependencias locales usando la imagen ofi
 
 ```bash
 docker run --rm -p 8080:8080 \
-  -e MONGO_URL='mongodb+srv://admin:qCvEtsWIqrh8PID0@cluster0.cihtj42.mongodb.net/adoptme?retryWrites=true&w=majority' \
+  -e MONGO_URL='URL ATLAS' \
   garkecar92/adoptme-final:1.0.0
 ```
 
